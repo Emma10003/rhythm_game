@@ -177,48 +177,38 @@ $(function () {
      *    0.3초 정도 기다린 후 작업 진행
      *
      *
-     *    과제 : 마우스 클릭 및 모바일 터치 처리
+     *    과제 : 마우스 클릭 및 모바일 터치 처리 -> 완료!
      *
-     *    $(".key").on("mousedown 또는 touchstart", function(e){
+     *    $(".key").on("mousedown touchstart", function(e){
      *        e.preventDefault();  // 더블 클릭 시 확대 등 기본 동작 방지 (모바일)
      *    })
      */
-    $(".key").on("mousedown" || "touchstart", function (e) {
+    // $(".key").on("mousedown touchstart", function (e) {
+    // $(".key").on("touchstart", ".key", function (e) {
+    $(".key").on("touchstart", function (e) {
         e.preventDefault(); // 더블 클릭 시 확대 등 기본 동작 방지 (모바일)
-        const key = e.target.textContent.toLowerCase();
-        console.log("e.key : ", key);
-        const lane = keyMap[key];
+        e.stopPropagation();
+
+        const lane = $(this).parent().index();
         const judgeLine = $("#game-container").height() - 80;
         $(".note").each(function () {
-            // 현재 아이템이 입력된 키의 레인과 일치하는지 확인
             if ($(this).data("lane") === lane) {
                 const notePos = $(this).position().top + 25;
-
-                // 아이템이 판정선 근처에 있는지 확인 (50px 오차 범위 사이)
                 if (Math.abs(notePos - judgeLine) < 50) {
+                    // abs : 절댓값으로 -50도 50으로 처리
                     $(this).stop().remove();
                     score++;
                     $("#score").text(score);
 
                     // 성공 시각 효과 실행
                     성공함수(lane);
+                    $(".key").eq(lane).addClass("perfect");
+                    setTimeout(() => $(".key").eq(lane).removeClass("perfect"), 300);
+                    return false;
                 }
-
-                // 해당 키 버튼에 성공 효과 클래스 추가
-                $(".key").eq(lane).addClass("perfect");
-                setTimeout(() => $(".key").eq(lane).removeClass("perfect"), 300);
-                // setTimeout 을 이용해서 입력한 키보드 효과를 0.3초 후 누름 뗌 설정에 대해서
-                // CSS 제공
-
-                return false; // each 루트 중단(하나의 아이템만 처리)
             }
-            $(".key").eq(lane).addClass("passed");
-            setTimeout(() => $(".key").eq(lane).removeClass("passed"), 100);
         });
+
+        $("#startBtn").click(() => startGame());
     });
-
-    $("#startBtn").click(() => startGame());
 });
-
-// 마우스 클릭이나 모바일 터치로도 게임 가능하게 설정
-// mousedown, touchstart
