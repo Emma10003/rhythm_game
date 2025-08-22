@@ -159,8 +159,11 @@ $(function () {
         });
 
         // 성공/실패 관계없이 항상 키 눌림 설정에 대해서 css 적으로 보여주기
+        // $(".key").eq(lane) 현재 눌림을 당하고 있는 키에 passed 클래스 추가
         $(".key").eq(lane).addClass("passed");
-        setTimeout(() => $(".key").eq(lane).removeClass("passedz"), 300);
+        // 0.1초 후 눌림을 당하고 눌림 당하기를 종료한 레인 키에 passed 클래스 제거
+        setTimeout(() => $(".key").eq(lane).removeClass("passed"), 100);
     });
-    startGame();
+
+    $("#startBtn").click(() => startGame());
 });
