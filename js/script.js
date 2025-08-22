@@ -172,13 +172,8 @@ $(function () {
      *        e.preventDefault();  // 더블 클릭 시 확대 등 기본 동작 방지 (모바일)
      *    })
      */
-    $(".key").on("mousedown", function (e) {
+    $(".key").on("mousedown" || "touchstart", function (e) {
         e.preventDefault(); // 더블 클릭 시 확대 등 기본 동작 방지 (모바일)
-        const key = e.key.toLowerCase();
-        if (!keyMap.hasOwnProperty(key)) {
-            // 가지고 있지 않는 게 true라면
-            return; // 아래 코드를 수행하지 못하게 돌려보내기
-        }
         const lane = keyMap[key];
         const judgeLine = $("#game-container").height() - 80;
         $(".note").each(function () {
