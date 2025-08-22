@@ -166,6 +166,17 @@ $(function () {
     });
 
     /*
+     * mousedown : 마우스를 사용하는 기기를 위한 이벤트
+     * touchstart : 터치스크린이 있는 기기를 위한 이벤트
+     *              손가락이 화면에 닿았을 때 발생
+     *
+     * mousedown 으로만 모두 처리 가능하긴 함
+     * 하지만 반응 속도 지연 발생.
+     * -> 모바일 브라우저는 사용자가 화면을 터치했을 때, 이것이 한 번의 탭인지
+     *    아니면 화면을 확대하기 위한 더블탭인지 구분하기 위해
+     *    0.3초 정도 기다린 후 작업 진행
+     *
+     *
      *    과제 : 마우스 클릭 및 모바일 터치 처리
      *
      *    $(".key").on("mousedown 또는 touchstart", function(e){
@@ -174,6 +185,8 @@ $(function () {
      */
     $(".key").on("mousedown" || "touchstart", function (e) {
         e.preventDefault(); // 더블 클릭 시 확대 등 기본 동작 방지 (모바일)
+        const key = e.target.textContent.toLowerCase();
+        console.log("e.key : ", key);
         const lane = keyMap[key];
         const judgeLine = $("#game-container").height() - 80;
         $(".note").each(function () {
